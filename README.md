@@ -1,6 +1,6 @@
 # SatelliteSR-Frontend-Mobile
 
-This is a React Native-based frontend built for iOS and Android devices to interact with the NASA SpaceApps 2024 challenge project "Satellite Reflectance Data: On the Fly and at Your Fingertips."
+This is a React Native-based frontend built for iOS and Android devices to interact with the NASA SpaceApps 2024 challenge project [Satellite Reflectance Data: On the Fly and at Your Fingertips.](https://www.spaceappschallenge.org/nasa-space-apps-2024/challenges/landsat-reflectance-data-on-the-fly-and-at-your-fingertips/?tab=details)
 
 The mobile application allows users to access and visualize satellite overpass information and Enhanced Vegetation Index (EVI) data directly on their mobile devices, with seamless integration to the Flask-based backend for real-time data interaction.
 
