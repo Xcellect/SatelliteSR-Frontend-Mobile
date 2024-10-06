@@ -1,50 +1,98 @@
-# Welcome to your Expo app 👋
+# SatelliteSR-Frontend-Mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is a React Native-based frontend built for iOS and Android devices to interact with the NASA SpaceApps 2024 challenge project "Satellite Reflectance Data: On the Fly and at Your Fingertips."
 
-## Get started
+The mobile application allows users to access and visualize satellite overpass information and Enhanced Vegetation Index (EVI) data directly on their mobile devices, with seamless integration to the Flask-based backend for real-time data interaction.
 
-1. Install dependencies
+## Features
 
-   ```bash
-   npm install
-   ```
+- **Interactive Map**: Allows users to interact with the map to specify locations of interest, similar to the web application.
+- **Satellite Overpass Data Visualization**: Displays upcoming and historical overpasses of Landsat 8 and Landsat 9 satellites.
+- **EVI Overlay**: Visualizes the calculated Enhanced Vegetation Index for specific regions.
+- **Push Notifications**: Notifies users when a satellite is expected to pass over their selected locations.
+- **Responsive UI**: Optimized for both iOS and Android devices, providing a consistent and user-friendly experience.
 
-2. Start the app
+## Setup
 
-   ```bash
+### Prerequisites
+
+- Node.js and npm (Node Package Manager)
+- Expo CLI (https://expo.dev/)
+
+### Installation Steps
+
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/your-username/SatelliteSR-Frontend-Mobile.git
+    cd SatelliteSR-Frontend-Mobile
+    ```
+
+2. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+3. Create a `.env` file in the project root and add the necessary environment variables:
+
+    ```bash
+    REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+    REACT_APP_BACKEND_URL=http://localhost:5000
+    EXPO_DEV_TOOLS_PORT=19000
+    ```
+
+4. Start the application:
+
+    ```bash
     npx expo start
-   ```
+    ```
 
-In the output, you'll find options to open the app in a
+The application will open in Expo Developer Tools, allowing you to run the app on an emulator or a physical device.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Directory Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `assets/`: Images, icons, and other static assets.
+- `components/`: Reusable components across the application.
+- `screens/`: Various screens used within the app (e.g., Home, Map, Settings).
+- `navigation/`: React Navigation configuration for navigating between screens.
+- `services/`: API services and utility functions for interacting with the backend.
 
-## Get a fresh project
+## Endpoints (Interaction with Backend)
 
-When you're ready, run:
+- **`/overpass`**: Fetches upcoming satellite overpass information.
+- **`/historical_overpass`**: Retrieves historical satellite overpasses and metadata.
+- **`/evi`**: Obtains Enhanced Vegetation Index data for visualization.
 
-```bash
-npm run reset-project
-```
+## How It Works
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+1. **Interactive Map**: Uses Google Maps API or Mapbox for mobile applications to allow users to select a point of interest.
+2. **Data Submission**: Users can input coordinates directly or tap on the map to drop a pin. The data is sent to the Flask backend to retrieve relevant satellite and EVI information.
+3. **EVI Overlay**: The calculated EVI from the backend is overlaid onto the map as a transparent layer for visual representation.
 
-## Learn more
+## Capabilities
 
-To learn more about developing your project with Expo, look at the following resources:
+- **User-Friendly Interface**: Optimized for mobile inputs, such as taps and gestures, to navigate through the app.
+- **Push Notifications**: Users are notified about satellite overpasses and EVI updates for selected regions.
+- **Environmental Visualization**: View vegetation health data as an overlay on the map.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## Use Cases
 
-## Join the community
+- **Farmers**: Monitor the health of crops by assessing EVI data directly on their mobile devices.
+- **Urban Planners**: Evaluate green cover in urban areas using real-time satellite data.
+- **Researchers**: Access and visualize environmental data directly from their phones or tablets.
 
-Join our community of developers creating universal apps.
+## Contributing
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Contributions are welcome! If you have suggestions or feature requests, please create an issue or open a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Contact
+
+For questions or support, feel free to reach out:
+
+- **Email**: your-email@example.com
+- **GitHub**: [your-username](https://github.com/your-username)

@@ -1,101 +1,7 @@
-// import { Image, StyleSheet, Platform } from 'react-native';
-
-// import { HelloWave } from '@/components/HelloWave';
-// import ParallaxScrollView from '@/components/ParallaxScrollView';
-// import { ThemedText } from '@/components/ThemedText';
-// import { ThemedView } from '@/components/ThemedView';
-
-// export default function HomeScreen() {
-//   return (
-//     <ParallaxScrollView
-//       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-//       headerImage={
-//         <Image
-//           source={require('@/assets/images/partial-react-logo.png')}
-//           style={styles.reactLogo}
-//         />
-//       }>
-//       <ThemedView style={styles.titleContainer}>
-//         <ThemedText type="title">Welcome!</ThemedText>
-//         <HelloWave />
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-//         <ThemedText>
-//           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-//           Press{' '}
-//           <ThemedText type="defaultSemiBold">
-//             {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-//           </ThemedText>{' '}
-//           to open developer tools.
-//         </ThemedText>
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-//         <ThemedText>
-//           Tap the Explore tab to learn more about what's included in this starter app.
-//         </ThemedText>
-//       </ThemedView>
-//       <ThemedView style={styles.stepContainer}>
-//         <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-//         <ThemedText>
-//           When you're ready, run{' '}
-//           <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-//           <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-//           <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-//           <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-//         </ThemedText>
-//       </ThemedView>
-//     </ParallaxScrollView>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   titleContainer: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     gap: 8,
-//   },
-//   stepContainer: {
-//     gap: 8,
-//     marginBottom: 8,
-//   },
-//   reactLogo: {
-//     height: 178,
-//     width: 290,
-//     bottom: 0,
-//     left: 0,
-//     position: 'absolute',
-//   },
-// });
-
-
 import React, { useState, useEffect } from 'react';
-import { Image, StyleSheet, Platform, View, Text, TextInput, Button, Alert } from 'react-native';
+import { Image, StyleSheet, View, Text, TextInput, Button, Alert, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { initializeApp, getApps } from 'firebase/app';
-import 'firebase/messaging';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
-// Firebase configuration (replace with your own Firebase config)
-const firebaseConfig = {
-  apiKey: "AIzaSyCpTzt_icjFSCwdiVzH71lwQPK06QoWMrU",
-  authDomain: "landsat-3efbe.firebaseapp.com",
-  projectId: "landsat-3efbe",
-  storageBucket: "landsat-3efbe.appspot.com",
-  messagingSenderId: "750964026544",
-  appId: "1:750964026544:web:1b01eb5104757a8d875f75",
-  measurementId: "G-08ME6Z741X"
-};
-
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
-}
 
 export default function HomeScreen() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
@@ -107,6 +13,7 @@ export default function HomeScreen() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const [historyData, setHistoryData] = useState<any[]>([]);
 
   // Request location permissions
   useEffect(() => {
@@ -141,96 +48,89 @@ export default function HomeScreen() {
     }
   };
 
+  // Dummy data for history
+  const getHistoricalData = () => {
+    // Assume historyData is populated here
+    setHistoryData([
+      {
+        sceneId: 'LC08_L1TP_007029_20241004_20241004_02_RT',
+        imageUrl: 'path/to/LC08_L1TP_007029_20241004_20241004_02_RT.jpg',
+        satellite: 'Landsat 8',
+        path: '007',
+        acquisitionDate: '2024-10-04',
+        processingDate: '2024-10-04',
+      },
+      {
+        sceneId: 'LC09_L1TP_007029_20240926_20240926_02_T1',
+        imageUrl: 'path/to/LC09_L1TP_007029_20240926_20240926_02_T1.jpg',
+        satellite: 'Landsat 9',
+        path: '007',
+        acquisitionDate: '2024-09-26',
+        processingDate: '2024-09-26',
+      },
+    ]);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
+    <View style={{ flex: 1, marginTop: 20 }}>
+      <MapView
+        style={{ height: 300 }}
+        region={mapRegion}
+        onRegionChangeComplete={(region) => setMapRegion(region)}
+      >
+        {location && (
+          <Marker
+            coordinate={{
+              latitude: mapRegion.latitude,
+              longitude: mapRegion.longitude,
+            }}
+            title={'Selected Location'}
+          />
+        )}
+      </MapView>
+      <View style={{ padding: 10 }}>
+        <Text>Enter Latitude and Longitude:</Text>
+        <TextInput
+          placeholder="Latitude"
+          value={latitude}
+          onChangeText={(text) => setLatitude(text)}
+          keyboardType="numeric"
+          style={{ borderBottomWidth: 1, marginBottom: 10 }}
         />
-      }
-    >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-      <View style={{ flex: 1, marginTop: 20 }}>
-        <MapView
-          style={{ height: 300 }}
-          region={mapRegion}
-          onRegionChangeComplete={(region) => setMapRegion(region)}
-        >
-          {location && (
-            <Marker
-              coordinate={{
-                latitude: mapRegion.latitude,
-                longitude: mapRegion.longitude,
-              }}
-              title={'Selected Location'}
-            />
-          )}
-        </MapView>
-        <View style={{ padding: 10 }}>
-          <Text>Enter Latitude and Longitude:</Text>
-          <TextInput
-            placeholder="Latitude"
-            value={latitude}
-            onChangeText={(text) => setLatitude(text)}
-            keyboardType="numeric"
-            style={{ borderBottomWidth: 1, marginBottom: 10 }}
-          />
-          <TextInput
-            placeholder="Longitude"
-            value={longitude}
-            onChangeText={(text) => setLongitude(text)}
-            keyboardType="numeric"
-            style={{ borderBottomWidth: 1, marginBottom: 10 }}
-          />
-          <Button title="Set Location" onPress={handleLocationInput} />
-        </View>
+        <TextInput
+          placeholder="Longitude"
+          value={longitude}
+          onChangeText={(text) => setLongitude(text)}
+          keyboardType="numeric"
+          style={{ borderBottomWidth: 1, marginBottom: 10 }}
+        />
+        <Button title="Set Location" onPress={handleLocationInput} />
       </View>
-    </ParallaxScrollView>
+      <View style={{ padding: 10 }}>
+        <Button title="Get Historical Data" onPress={getHistoricalData} />
+      </View>
+      <FlatList
+        data={historyData}
+        keyExtractor={(item, index) => `${item.sceneId}_${index}`}
+        renderItem={({ item }) => (
+          <View key={item.sceneId} style={{ marginBottom: 10 }}>
+            <Image source={{ uri: item.imageUrl }} style={{ height: 150, width: '100%' }} />
+            <Text>{`Satellite: ${item.satellite}`}</Text>
+            <Text>{`Scene ID: ${item.sceneId}`}</Text>
+            <Text>{`Path: ${item.path}`}</Text>
+            <Text>{`Acquisition Date: ${item.acquisitionDate}`}</Text>
+            <Text>{`Processing Date: ${item.processingDate}`}</Text>
+          </View>
+        )}
+        ListHeaderComponent={
+          <Text style={{ padding: 10, fontSize: 18, fontWeight: 'bold' }}>Historical Data</Text>
+        }
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
   reactLogo: {
     height: 178,
     width: 290,
