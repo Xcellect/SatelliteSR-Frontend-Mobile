@@ -38,7 +38,7 @@ The mobile application allows users to access and visualize satellite overpass i
 
     ```bash
     REACT_APP_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-    REACT_APP_BACKEND_URL=http://localhost:5000
+    REACT_APP_BACKEND_URL=http://localhost:5001
     EXPO_DEV_TOOLS_PORT=19000
     ```
 
@@ -90,9 +90,9 @@ Contributions are welcome! If you have suggestions or feature requests, please c
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Contact
-
-For questions or support, feel free to reach out:
-
-- **Email**: your-email@example.com
-- **GitHub**: [your-username](https://github.com/your-username)
+## The Team
+- Jasper Grant ([@JasperGrant](https://github.com/JasperGrant))
+- Aniq Elahi ([@Aniq-byte](https://github.com/Aniq-byte))
+- Paras Nath Seth ([@parass05](https://github.com/parass05))
+- Christian Simoneau ([@ChrisSimoneau](https://github.com/ChrisSimoneau))
+- Aishik Sanyal ([@Xcellect](https://github.com/Xcellect))
